@@ -1035,6 +1035,12 @@ void WbMainWindow::closeEvent(QCloseEvent *event) {
   if (WbApplication::instance())
     savePerspective(false, true);
 
+  // if there is a pending recording, stop it correctly
+  if (WbAnimationRecorder::instance()) {
+    WbAnimationRecorder::instance()->setStartFromGuiFlag(false);
+    WbAnimationRecorder::instance()->stop();
+  }
+
   // the scene tree qt model should be cleaned first
   // otherwise some signals can be fired after the
   // QCoreApplication::exit() call
